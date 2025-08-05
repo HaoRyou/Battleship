@@ -1,0 +1,30 @@
+.row {
+    display: flex;
+}
+
+.boards{
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
+.cell.ship {
+    background-color: lightblue;
+}
+.cell.hit {
+    background-color: red;
+}
+.cell.miss {
+    background-color: gray;
+}
+.cell.hover {
+    background-color: yellow;
+}
+
+.ship.hit{
+    background-color: green;
+}

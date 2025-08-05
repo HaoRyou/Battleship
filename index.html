@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Battle Ship</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Battleship Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h1>Battleship</h1>
+
+  <div class="controls">
+    <button id="Randomise">Randomise Board</button>
+    <button id="Reset">Reset Game</button>
+  </div>
+  <div class="score">
+    <p id="score"></p>
+    <p id="miss"></p>
+    <p id="sunk"></p>
+  </div>
+
+  <div class="boards">
+    <div>
+      <div class="board-section">
+      <h2>Player Board</h2>
+      <div id="Player" class="board"></div>
+    </div>
+    </div>
     
+    <div>
+      <div class="board-section">
+      <h2>Computer Board</h2>
+      <div id="Computer" class="board"></div>
+    </div>
+    </div>
+    
+  </div>
+
+  <script type="module" src="./main.js" defer></script>
+
 </body>
 </html>

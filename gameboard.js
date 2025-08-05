@@ -1,51 +1,71 @@
-import { ship, ship } from "./ship";
+import { ship } from './ship.js';
 
-class Gameboard{
+export class Gameboard{
     constructor(){
         this.score = 0;
         this.miss = 0;
         this.numsunk = 0;
-        this.board = Array.from({10:10}, () => new Array.fill(0));
+        this.board = Array.from({ length: 10 }, () => Array(10).fill(0));
         this.numships = [];
     }
-    receiveAttack(x,y){
-        this.numships.forEach(ships => {
-            ships.location.forEach(location => {
-                let fire = {x,y};
-                if(fire == location){
-                    ships.hit();
-                    if(ships.issunk()){
-                        this.score++;
-                    }
-                    return;
+   receiveAttack({ x, y }) {
+        if (!this.board[y] || this.board[y][x] === undefined) {
+            console.error("Invalid coordinates:", x, y);
+            return false;
+        }
+
+        if (this.board[y][x] === 10 || this.board[y][x] === -1) {
+            // Already attacked
+            return false;
+        }
+       
+        for (const ship of this.numships) {
+            for (const location of ship.location) {
+                if (location.x == x && location.y == y) {
+                    ship.hit();
+                    this.board[y][x] = 10;
+                if (ship.issunk()) {
+                    this.score++;
                 }
-            
-            });
-        });
-        miss++;
-    }
-    match(x,y){
-        this.numships.forEach(ships => {
-            ships.location.forEach(location => {
-                let fire = {x,y};
-                if(fire == location){
                     return true;
                 }
-            
-            });
-        });
+
+            }
+        }
+        if(this.board[y][x]!=10){
+            this.board[y][x] = -1; // miss
+            this.miss++
+        }
+        ;
+        return true;
+    }
+
+
+    match(x, y) {
+        for (const ship of this.numships) {
+            for (const location of ship.location) {
+            if (location.x === x && location.y === y) {
+                return true;
+            }
+            }
+        }
         return false;
     }
     printboard(){
+        let line;
         for(let i=0;i<10;i++){
+            line = "";
             for(let z=0;z<10;z++){
-                console.log(this.board[i][y]);
+                line = line + this.board[i][z] + " ";
             }
+            console.log(line);
         }
     }
 
     clearboard(){
-        this.shiplocation = [];
+        this.numships = [];
+        this.board = Array.from({ length: 10 }, () => Array(10).fill(0));
+
     }
 
     randomcoord(){
@@ -70,6 +90,7 @@ class Gameboard{
             }
         }
     }
+    
     checkfit(size,x,y){
 
         const directions = {
@@ -89,7 +110,7 @@ class Gameboard{
 
                 if(
                     nx < 0 || nx >= 10 || ny < 0 || ny >= 10 ||
-                    this.grid[nx][ny] !== 0
+                    this.board[nx][ny] !== 0
                 ){
                     fits = false;
                     break;
@@ -104,7 +125,7 @@ class Gameboard{
     }
 
     placeShip(size,x,y,direction){
-        const ship = new ship(size);
+        const ships = new ship(size);
         let dx = 0;
         let dy = 0;
         if (direction === "right") dy = 1;
@@ -118,11 +139,10 @@ class Gameboard{
             const nx = x + dx * i;
             const ny = y + dy * i;
             this.board[nx][ny] = 1;
-            ship.location.push({ x: nx, y: ny });
+            ships.location.push({ x: ny, y: nx });
         }
 
-        this.numships.push(ship);
+        this.numships.push(ships);
     }  
 }
 
-export {Gameboard};

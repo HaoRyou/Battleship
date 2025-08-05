@@ -1,4 +1,4 @@
-class ship{
+export class ship{
     constructor(size){
         this.length = size;
         this.life = 0;
@@ -16,5 +16,3 @@ class ship{
         return this.sunk;
     }
 }
-
-export {ship}
